@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Cat World - сайт про котиков</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
 <header class="site-header">
     <a class="register"></a>
     <div class="container">
@@ -27,10 +22,4 @@
         </a>
     </section>
 </header>
-<footer class="site-footer">
-    <div class="container">
-        <p>© ООО «Barsik and Cats», 2021</p>
-    </div>
-</footer>
-</body>
-</html>
+{% endblock %}
