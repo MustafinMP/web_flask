@@ -1,0 +1,62 @@
+.site-header h1 {
+  width: 500px;
+  margin: 0 auto 8px;
+  font-family: "Georgia", serif;
+  text-align: center;
+  font-weight: normal;
+  font-size: 60px;
+  line-height: 64px;
+  margin-top: 120px;
+}
+
+.menu-blocks a {
+  color: #ffffff;
+  text-decoration: none;
+  border: 2px solid #cccccc;
+  height: 250px;
+}
+
+.site-header p {
+  width: 255px;
+  margin: 0 auto 26px;
+  text-align: center;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.site-header {
+  min-width: 1200px;
+  height: 750px;
+  padding-top: 30px;
+  background: #847462 no-repeat center url("../img/header-bg2.jpg");
+  background-size: cover;
+  color: #ffffff;
+}
+
+.site-footer {
+  min-width: 550px;
+  background-color: #33302b;
+  color: #ffffff;
+}
+
+.site-footer .container {
+  text-align: center;
+}
+
+.site-footer p {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 20px;
+}
+
+.menu-blocks a {
+  display: inline-block;
+  width: 32%;
+  margin: 0 5px;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  background-position: center top;
+  text-align: center;
+  font-size: 30px;
+  margin-top: 16px;
+}
