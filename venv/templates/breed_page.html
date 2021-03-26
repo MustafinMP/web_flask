@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Записи в блоге</h1>
+{% for item in breeds %}
+<div class="cat-breed-item">
+    <h2>{{item["name"]}}</h2>
+    <div>
+        {{item}}
+    </div>
+    <div>
+        Автор - {{item}}, Дата написания - {{item}}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
