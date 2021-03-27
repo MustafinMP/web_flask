@@ -22,6 +22,7 @@ def blogs_page():
     return render_template('blogs_page.html', news=news)
 
 
+# ---------------------- породы -----------------------
 @app.route('/breeds')
 def breed_page():
     response = requests.get('https://api.thecatapi.com/v1/breeds/')
@@ -40,6 +41,7 @@ def one_breed_page(breed):
                            description=description, name=breed)
 
 
+# ---------------------------------------
 def main():
     db_session.global_init("db/blogs.db")
     app.run()
