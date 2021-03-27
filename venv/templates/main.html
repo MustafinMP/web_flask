@@ -1,6 +1,11 @@
-{% extends "base.html" %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat World - сайт про котиков</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+</head>
+<body>
 <header class="site-header">
     <a class="register"></a>
     <div class="container">
@@ -10,16 +15,22 @@
     <section class="menu-blocks">
         <a href="{{ blogs }}">
             <h2>Блоги</h2>
-            <h4>Ведите блог своего питомца и наблюдайте за жизнью других котов</h4>
+            <h4>Ведите блог своего питомца и наблюдайте за жизнью других котиков</h4>
         </a>
-        <a href="{{ gallery }}">
-            <h2>Галерея</h2>
-            <h4>Коллекция фотографий различных котиков</h4>
+        <a href="{{ subscriptions }}">
+            <h2>Подписки</h2>
+            <h4>Подпишитесь на интересных авторов</h4>
         </a>
         <a href="{{ breed }}">
             <h2>Породы</h2>
-            <h4>Информация о многих породах котов</h4>
+            <h4>Информация о многих породах котиков</h4>
         </a>
     </section>
 </header>
-{% endblock %}
+<footer class="site-footer">
+    <div class="container">
+        <p>© ООО «Barsik and Cats», 2021</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,38 @@
+.line-header h1 {
+  margin-top: 2px;
+  margin-left: 15px;
+  display: inline-block;
+  width: 24%;
+  height: 62px;
+  margin: 0 auto 0px;
+  text-align: center;
+  font-family: "Georgia", serif;
+  font-weight: normal;
+  font-size: 50px;
+  color: #ffffff;
+  border-right: 2px solid #ffffff;
+}
+
+.line-header h2 {
+  margin-top: 2px;
+  display: inline-block;
+  width: 24%;
+  margin: 0 auto 8px;
+  text-align: right;
+  font-family: "Georgia", serif;
+  font-weight: normal;
+  font-size: 40px;
+  color: #ffffff
+}
+
+.line-header a {
+  display: inline-block;
+  width: 24%;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+}
+
+.line-header {
+  background: #97b601;
+}

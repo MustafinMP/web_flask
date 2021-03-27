@@ -5,19 +5,21 @@ from data.news import News
 import requests
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app.config['SECRET_KEY'] = 'cat_world_secret_key'
 
 
 @app.route('/')
 def main_page():
     return render_template('main.html', blogs='/blogs',
-                           gallery='/gallery',
+                           gallery='/subscriptions',
                            breed='/breeds')
 
 
 @app.route('/blogs')
 def blogs_page():
-    return render_template('blogs_page.html')
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).filter(News.is_private != True)
+    return render_template('blogs_page.html', news=news)
 
 
 @app.route('/breeds')
@@ -29,12 +31,13 @@ def breed_page():
 
 @app.route('/breeds/<breed>')
 def one_breed_page(breed):
-    response = requests.get(f'https://api.thecatapi.com/v1/breeds/{breed}')
+    response = requests.get(f'https://api.thecatapi.com/v1/images/search?breed_ids={breed}')
     json_response = response.json()
     print(json_response)
-    image = 'https://cdn2.thecatapi.com/images/' + \
-            json_response['reference_image_id'] + '.png'
-    return render_template('one_breed_page.html', breed=json_response, image=image)
+    image = json_response[0]["url"]
+    description = json_response[0]["breeds"][0]["description"]
+    return render_template('one_breed_page.html', breed=json_response, image=image,
+                           description=description, name=breed)
 
 
 def main():

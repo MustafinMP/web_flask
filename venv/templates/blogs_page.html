@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <title>Cat World - сайт про котиков</title>
     <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/base_style.css"/>
 </head>
 <body>
-<header>
-    <div class="line-header">
-        <h1>Cat World</h1>
-        <a href={{ blogs }}><h2>Блоги</h2></a>
-        <a href={{ subscriptions }}><h2>Подписки</h2></a>
-        <a href={{ breeds }}><h2>Породы</h2></a>
+<!---->
+<h1>Записи в блоге</h1>
+{% for item in news %}
+<div class="col-md6 border rounded">
+    <h2>{{item.title}}</h2>
+    <div>
+        {{item.content}}
     </div>
-</header>
+    <div>
+        Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+    </div>
+</div>
+{% endfor %}
+<!--b5ce12-->
 <footer class="site-footer">
     <div class="container">
         <p>© ООО «Barsik and Cats», 2021</p>
