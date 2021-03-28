@@ -14,6 +14,15 @@
   text-decoration: none;
   border: 2px solid #cccccc;
   height: 250px;
+  display: inline-block;
+  width: 32%;
+  margin: 0 5px;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  background-position: center top;
+  text-align: center;
+  font-size: 30px;
+  margin-top: 16px;
 }
 
 .site-header p {
@@ -49,14 +58,3 @@
   padding: 0 20px;
 }
 
-.menu-blocks a {
-  display: inline-block;
-  width: 32%;
-  margin: 0 5px;
-  vertical-align: top;
-  background-repeat: no-repeat;
-  background-position: center top;
-  text-align: center;
-  font-size: 30px;
-  margin-top: 16px;
-}

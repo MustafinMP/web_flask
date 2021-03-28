@@ -7,13 +7,15 @@
 {% block content %}
 <h1 class="breed-header">Породы котиков</h1>
 {% for item in breeds %}
-<div class="one-breed-block">
-    <h2>{{item["name"]}}</h2>
-    <div>
-        {{item}}
-    </div>
-    <div>
-    </div>
-</div>
+<section class="one-breed-block">
+    <a href="/breeds/{{ item['id'] }}">
+        <h2>{{ item["name"] }}</h2>
+        <h3>
+            {{ item["description"] }}
+        </h3>
+        <div>
+        </div>
+    </a>
+</section>
 {% endfor %}
 {% endblock %}
