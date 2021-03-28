@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Cat World - сайт про котиков</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
-</head>
-<body>
-<!---->
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="../static/css/breeds.css"/>
+{% endblock %}
+
+{% block content %}
 <div class="one-breed-block">
     <h1>{{ name }}</h1>
     <img src={{ image }}>
     <p>{{ description }}</p>
 </div>
-<!--b5ce12-->
-<footer class="site-footer">
-    <div class="container">
-        <p>© ООО «Barsik and Cats», 2021</p>
-    </div>
-</footer>
-</body>
-</html>
+{% endblock %}
