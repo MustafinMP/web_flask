@@ -18,4 +18,5 @@ class News(SqlAlchemyBase):
 
     user_id = sqlalchemy.Column(sqlalchemy.Integer,
                                 sqlalchemy.ForeignKey("users.id"))
+    likers_id = sqlalchemy.Column(sqlalchemy.Binary)
     user = orm.relation('User')
