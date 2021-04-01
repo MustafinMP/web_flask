@@ -4,11 +4,11 @@ text-align: center;
 }
 
 .one-breed-block a {
+  margin: 20px;
   color: #111;
   text-decoration: none;
   background-repeat: no-repeat;
   text-align: center;
-  box-shadow: 0 0 5px 4px #999;
 }
 
 .one-breed-block h2 {
@@ -16,3 +16,7 @@ text-align: center;
   text-decoration: none;
   text-align: center;
 }
+
+.one-breed-block {
+  margin: 20px;
+  border: 2px solid #000000;}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block links %}
+
+{% endblock %}
+{% block content %}
+<a href="../../autors/{{ news.user_id }}"><h1>{{ news.user.name }}</h1></a>
+<h3>Дата написания - {{ news.created_date }}</h3>
+<p>{{ news.content }}</p>
+{% endblock %}

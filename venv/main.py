@@ -2,8 +2,10 @@ from flask import Flask, render_template, redirect
 from data import db_session
 from data.users import User
 from data.news import News
+from data.comments import Comments
 from forms.user import RegisterForm
-from flask_login import LoginManager, login_user
+from forms.news import NewsForm
+from flask_login import LoginManager, login_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import EmailField
 from wtforms import *
@@ -43,6 +45,22 @@ def blogs_page():
     return render_template('blogs_page.html', news=news)
 
 
+@app.route('/blogs/<id>')
+def one_blog_page(id):
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).filter(News.id == id)
+    return render_template('one_blog_page.html', news=news[0])
+
+
+@app.route('/autors/<id>')
+def one_autor_page(id):
+    db_sess = db_session.create_session()
+    users = db_sess.query(User).filter(User.id == id)
+    news = db_sess.query(News).filter(News.user_id == id)
+    return render_template('one_autor_page.html', user=users[0], news=news)
+
+
+#--------------------- forms ------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -83,7 +101,57 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-# ---------------------- породы -----------------------
+@app.route('/blogs/new',  methods=['GET', 'POST'])
+@login_required
+def add_news():
+    form = NewsForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = News()
+        news.title = form.title.data
+        news.content = form.content.data
+        news.is_private = form.is_private.data
+        current_user.news.append(news)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('news.html', title='Добавление новости',
+                           form=form)
+
+
+@app.route('/blogs/new/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_news(id):
+    form = NewsForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id,
+                                          News.user == current_user
+                                          ).first()
+        if news:
+            form.title.data = news.title
+            form.content.data = news.content
+            form.is_private.data = news.is_private
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        news = db_sess.query(News).filter(News.id == id,
+                                          News.user == current_user
+                                          ).first()
+        if news:
+            news.title = form.title.data
+            news.content = form.content.data
+            news.is_private = form.is_private.data
+            db_sess.commit()
+            return redirect('/')
+        else:
+            abort(404)
+    return render_template('news.html',
+                           title='Редактирование новости',
+                           form=form
+                           )
+# ---------------------- breeds -----------------------
 @app.route('/breeds')
 def breed_page():
     response = requests.get('https://api.thecatapi.com/v1/breeds/')

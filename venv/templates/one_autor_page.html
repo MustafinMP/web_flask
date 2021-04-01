@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="../static/css/one_autor.css"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="user-header">{{ user.name }}</h1>
+<p class="about">{{ user.about }}</p>
+<h1>Записи пользователя</h1>
+{% for item in news %}
+<a class="news" href="/blogs/{{ item.id }}">
+    <h2>{{ item.title }}</h2>
+    <div>
+        {{ item.content }}
+    </div>
+    <div>
+        Дата написания - {{ item.created_date }}
+    </div>
+</a>
+{% endfor %}
+{% endblock %}

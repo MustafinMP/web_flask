@@ -8,8 +8,11 @@
 <body>
 <!---->
 <h1>Записи в блоге</h1>
+{% if current_user.is_authenticated %}
+    <a href="blogs/new" class="btn btn-secondary">Добавить новость</a>
+{% endif %}
 {% for item in news %}
-<div class="col-md6 border rounded">
+<a class="col-md6 border rounded" href="/blogs/{{ item.id }}">
     <h2>{{item.title}}</h2>
     <div>
         {{item.content}}
@@ -17,7 +20,7 @@
     <div>
         Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
     </div>
-</div>
+</a>
 {% endfor %}
 <!--b5ce12-->
 <footer class="site-footer">
