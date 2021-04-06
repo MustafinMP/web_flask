@@ -222,8 +222,9 @@ def one_breed_page(breed):
     print(json_response)
     image = json_response[0]["url"]
     description = json_response[0]["breeds"][0]["description"]
+    name = json_response[0]["breeds"][0]["name"]
     return render_template('one_breed_page.html', breed=json_response, image=image,
-                           description=description, name=breed)
+                           description=description, name=name)
 
 
 # ---------------------------------------
