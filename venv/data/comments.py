@@ -15,4 +15,3 @@ class Comments(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey("news.id"))
     text = sqlalchemy.Column(sqlalchemy.Text)
     user = orm.relation('User')
-    news = orm.relation('News')

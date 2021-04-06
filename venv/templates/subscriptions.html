@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="../static/css/subscriptions.css"/>
+{% endblock %}
+
+
+{% block content %}
+{% for autor in autors %}
+<a class="col-md6 border rounded" href="/blogs/{{ item.id }}">
+    <h2>{{autor}}</h2>
+    <div>
+        {{}}
+    </div>
+</a>
+{% endfor %}
+{% endblock %}

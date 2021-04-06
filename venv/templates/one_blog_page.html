@@ -7,4 +7,18 @@
 <a href="../../autors/{{ news.user_id }}"><h1>{{ news.user.name }}</h1></a>
 <h3>Дата написания - {{ news.created_date }}</h3>
 <p>{{ news.content }}</p>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.content.label }}<br>
+        {{ form.content(class="form-control") }}<br>
+        {% for error in form.content.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
 {% endblock %}

@@ -1,10 +1,13 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from data import db_session
 from data.users import User
 from data.news import News
 from data.comments import Comments
+from data.subscriptions import Subscriptions
 from forms.user import RegisterForm
 from forms.news import NewsForm
+from forms.comments import CommentsForm
+from forms.subscribe import SubscribeForm
 from flask_login import LoginManager, login_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import EmailField
@@ -38,29 +41,80 @@ def main_page():
                            breed='/breeds')
 
 
+@app.route('/subscriptions')
+def subscriptions():
+    autors = []
+    if current_user.is_authenticated:
+        db_sess = db_session.create_session()
+        autors = db_sess.query(User).filter(current_user.id == Subscriptions.user_id)
+    return render_template('subscriptions.html', autors=autors)
+
+
 @app.route('/blogs')
 def blogs_page():
     db_sess = db_session.create_session()
-    news = db_sess.query(News).filter(News.is_private != True)
+    news = db_sess.query(News)
     return render_template('blogs_page.html', news=news)
 
 
-@app.route('/blogs/<id>')
+@app.route('/blogs/<id>', methods=['GET', 'POST'])
 def one_blog_page(id):
+    form = CommentsForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        comments = Comments()
+        news.text = form.text.data
+        current_user.comments.append(comments)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
     db_sess = db_session.create_session()
     news = db_sess.query(News).filter(News.id == id)
-    return render_template('one_blog_page.html', news=news[0])
+    return render_template('one_blog_page.html', news=news[0], form=form)
 
 
-@app.route('/autors/<id>')
+@app.route('/autors/<id>', methods=['GET', 'POST'])
 def one_autor_page(id):
-    db_sess = db_session.create_session()
-    users = db_sess.query(User).filter(User.id == id)
-    news = db_sess.query(News).filter(News.user_id == id)
-    return render_template('one_autor_page.html', user=users[0], news=news)
+    if request.method == 'GET':
+        db_sess = db_session.create_session()
+        # запрос владельца блога
+        user = db_sess.query(User).filter(User.id == id).first()
+        # запрос его новостей
+        news = db_sess.query(News).filter(News.user_id == id)
+        # не показываем кнопку "подписаться", если это блог самого пользователя
+        if current_user.is_authenticated:
+            my_blog = True if current_user.id == id else False
+        # определяем текст для кнопки
+        if current_user.is_authenticated:
+            if current_user.id == id:
+                is_subscribed = None
+            else:
+                subscribe = db_sess.query(Subscriptions).filter(
+                    Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id).first()
+                is_subscribed == 'подписаться' if subscribe else 'отписаться'
+
+        return render_template('one_autor_page.html',
+                               user=user,
+                               news=news,
+                               my_blog=my_blog,
+                               is_subscribed=is_subscribed)
+
+    elif request.method == 'POST':
+        if current_user.is_authenticated:
+            subscribe = db_sess.query(Subscriptions).filter(
+                Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id)
+        if bool(subscribe):
+            delete
+        else:
+            new_sb = Subscriptions()
+            new_sb.user_id = current_user.id
+            new_sb.autor_id = id
+            db_sess.add(new_sb)
+            db_sess.commit()
+        # return render_template('one_autor_page.html', user=users[0], news=news, form=form)
 
 
-#--------------------- forms ------------------------
+# --------------------- forms ------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -101,7 +155,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/blogs/new',  methods=['GET', 'POST'])
+@app.route('/blogs/new', methods=['GET', 'POST'])
 @login_required
 def add_news():
     form = NewsForm()
@@ -151,6 +205,8 @@ def edit_news(id):
                            title='Редактирование новости',
                            form=form
                            )
+
+
 # ---------------------- breeds -----------------------
 @app.route('/breeds')
 def breed_page():
