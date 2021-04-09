@@ -82,29 +82,34 @@ def one_autor_page(id):
         # запрос его новостей
         news = db_sess.query(News).filter(News.user_id == id)
         # не показываем кнопку "подписаться", если это блог самого пользователя
-        if current_user.is_authenticated:
-            my_blog = True if current_user.id == id else False
+        my_blog = True if current_user.id == id else False
+        is_subscribed = None
         # определяем текст для кнопки
         if current_user.is_authenticated:
-            if current_user.id == id:
-                is_subscribed = None
-            else:
+            print(current_user.id)
+            if current_user.id != id:
+                print((not my_blog and current_user.is_authenticated))
                 subscribe = db_sess.query(Subscriptions).filter(
                     Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id).first()
-                is_subscribed == 'подписаться' if subscribe else 'отписаться'
+                print(subscribe)
+                is_subscribed = 'подписаться' if subscribe else 'отписаться'
+
+        print(current_user.is_authenticated)
 
         return render_template('one_autor_page.html',
                                user=user,
                                news=news,
                                my_blog=my_blog,
-                               is_subscribed=is_subscribed)
+                               is_subscribed=is_subscribed,
+                               current_user=current_user)
 
     elif request.method == 'POST':
-        if current_user.is_authenticated:
-            subscribe = db_sess.query(Subscriptions).filter(
-                Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id)
+        db_sess = db_session.create_session()
+        subscribe = db_sess.query(Subscriptions).filter(
+            Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id)
         if bool(subscribe):
-            delete
+            db_sess.delete(subscribe)
+            db_sess.commit()
         else:
             new_sb = Subscriptions()
             new_sb.user_id = current_user.id
@@ -219,7 +224,6 @@ def breed_page():
 def one_breed_page(breed):
     response = requests.get(f'https://api.thecatapi.com/v1/images/search?breed_ids={breed}')
     json_response = response.json()
-    print(json_response)
     image = json_response[0]["url"]
     description = json_response[0]["breeds"][0]["description"]
     name = json_response[0]["breeds"][0]["name"]

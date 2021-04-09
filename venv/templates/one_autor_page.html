@@ -8,7 +8,7 @@
 <h1 class="user-header">{{ user.name }}</h1>
 <p class="about">{{ user.about }}</p>
 <form action="" method="post">
-    {% if not my_blog % and current_user.is_authenticated}
+    {% if not my_blog and current_user.is_authenticated %}
     <input type="submit" value="{{ is_subscribed }}" name="subscribe">
     {% endif %}
 </form>
