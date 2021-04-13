@@ -46,7 +46,13 @@ def subscriptions():
     autors = []
     if current_user.is_authenticated:
         db_sess = db_session.create_session()
-        autors = db_sess.query(User).filter(current_user.id == Subscriptions.user_id)
+        autors_ids = db_sess.query(Subscriptions).filter(
+            current_user.id == Subscriptions.user_id)
+        ids = []
+        for i in autors_ids:
+            ids.append(i.autor_id)
+        autors = db_sess.query(User).filter(
+            User.id.in_(ids))
     return render_template('subscriptions.html', autors=autors)
 
 
@@ -60,17 +66,19 @@ def blogs_page():
 @app.route('/blogs/<id>', methods=['GET', 'POST'])
 def one_blog_page(id):
     form = CommentsForm()
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        comments = Comments()
-        news.text = form.text.data
-        current_user.comments.append(comments)
-        db_sess.merge(current_user)
-        db_sess.commit()
-        return redirect('/')
     db_sess = db_session.create_session()
+    if form.validate_on_submit():
+        comment = Comments()
+        comment.text = form.content.data
+        comment.news_id = int(id)
+        comment.name_id = current_user.id
+        db_sess.add(comment)
+        db_sess.commit()
+        return redirect(f'/blogs/{id}')
     news = db_sess.query(News).filter(News.id == id)
-    return render_template('one_blog_page.html', news=news[0], form=form)
+    comments = db_sess.query(Comments).filter(Comments.news_id == id)
+    return render_template('one_blog_page.html', news=news[0], form=form,
+                           current_user=current_user, comments=comments)
 
 
 @app.route('/autors/<id>', methods=['GET', 'POST'])
@@ -86,15 +94,10 @@ def one_autor_page(id):
         is_subscribed = None
         # определяем текст для кнопки
         if current_user.is_authenticated:
-            print(current_user.id)
             if current_user.id != id:
-                print((not my_blog and current_user.is_authenticated))
                 subscribe = db_sess.query(Subscriptions).filter(
                     Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id).first()
-                print(subscribe)
-                is_subscribed = 'подписаться' if subscribe else 'отписаться'
-
-        print(current_user.is_authenticated)
+                is_subscribed = 'подписаться' if subscribe is None else 'отписаться'
 
         return render_template('one_autor_page.html',
                                user=user,
@@ -106,8 +109,8 @@ def one_autor_page(id):
     elif request.method == 'POST':
         db_sess = db_session.create_session()
         subscribe = db_sess.query(Subscriptions).filter(
-            Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id)
-        if bool(subscribe):
+            Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id).first()
+        if not (subscribe is None):
             db_sess.delete(subscribe)
             db_sess.commit()
         else:
@@ -116,7 +119,7 @@ def one_autor_page(id):
             new_sb.autor_id = id
             db_sess.add(new_sb)
             db_sess.commit()
-        # return render_template('one_autor_page.html', user=users[0], news=news, form=form)
+        return redirect('/subscriptions')
 
 
 # --------------------- forms ------------------------

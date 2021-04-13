@@ -7,7 +7,8 @@
 <a href="../../autors/{{ news.user_id }}"><h1>{{ news.user.name }}</h1></a>
 <h3>Дата написания - {{ news.created_date }}</h3>
 <p>{{ news.content }}</p>
-<form action="" method="post">
+{% if current_user.is_authenticated %}
+<form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>
         {{ form.content.label }}<br>
@@ -21,4 +22,5 @@
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
 </form>
+{% endif %}
 {% endblock %}
