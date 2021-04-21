@@ -5,6 +5,5 @@ from wtforms.validators import DataRequired
 
 
 class CommentsForm(FlaskForm):
-    # title = StringField('Заголовок', validators=[DataRequired()])
-    content = TextField("Оставьте свой комментарий:")
+    content = TextField("Оставьте свой комментарий:", validators=[DataRequired()])
     submit = SubmitField('Отправить')

@@ -13,7 +13,9 @@ from flask_wtf import FlaskForm
 from wtforms.fields.html5 import EmailField
 from wtforms import *
 from wtforms.validators import DataRequired
+from werkzeug.utils import secure_filename
 import requests
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cat_world_secret_key'
@@ -60,7 +62,7 @@ def subscriptions():
 def blogs_page():
     db_sess = db_session.create_session()
     news = db_sess.query(News)
-    return render_template('blogs_page.html', news=news)
+    return render_template('blogs.html', news=news)
 
 
 @app.route('/blogs/<id>', methods=['GET', 'POST'])
@@ -76,9 +78,14 @@ def one_blog_page(id):
         db_sess.commit()
         return redirect(f'/blogs/{id}')
     news = db_sess.query(News).filter(News.id == id)
-    comments = db_sess.query(Comments).filter(Comments.news_id == id)
-    return render_template('one_blog_page.html', news=news[0], form=form,
-                           current_user=current_user, comments=comments)
+    comms = db_sess.query(Comments).filter(Comments.news_id == id)
+    comments = []
+    for c in comms:
+        user = db_sess.query(User).filter(User.id == c.name_id).first()
+        comments.append((user.name, c.text))
+    cmnts = False if comms is None else True
+    return render_template('one_blog_page.html', news=news[0], current_user=current_user,
+                           comms=comms, cmnts=cmnts, form=form, comments=comments)
 
 
 @app.route('/autors/<id>', methods=['GET', 'POST'])
@@ -89,15 +96,17 @@ def one_autor_page(id):
         user = db_sess.query(User).filter(User.id == id).first()
         # запрос его новостей
         news = db_sess.query(News).filter(News.user_id == id)
-        # не показываем кнопку "подписаться", если это блог самого пользователя
-        my_blog = True if current_user.id == id else False
         is_subscribed = None
         # определяем текст для кнопки
         if current_user.is_authenticated:
+            # не показываем кнопку "подписаться", если это блог самого пользователя
+            my_blog = True if current_user.id == id else False
             if current_user.id != id:
                 subscribe = db_sess.query(Subscriptions).filter(
                     Subscriptions.user_id == current_user.id, Subscriptions.autor_id == id).first()
                 is_subscribed = 'подписаться' if subscribe is None else 'отписаться'
+        else:
+            my_blog = False
 
         return render_template('one_autor_page.html',
                                user=user,
@@ -172,11 +181,10 @@ def add_news():
         news = News()
         news.title = form.title.data
         news.content = form.content.data
-        news.is_private = form.is_private.data
         current_user.news.append(news)
         db_sess.merge(current_user)
         db_sess.commit()
-        return redirect('/')
+        return redirect('/blogs')
     return render_template('news.html', title='Добавление новости',
                            form=form)
 

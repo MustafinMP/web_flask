@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="../static/css/blocks.css"/>
+{% endblock %}
+
+{% block content %}
+<h1 class="breed-header">Записи в блоге</h1>
+{% if current_user.is_authenticated %}
+<a href="blogs/new" class="btn btn-secondary">Добавить блог</a>
+{% endif %}
+{% for item in news %}
+<section class="one-block">
+    <a href="/blogs/{{ item.id }}">
+        <h2>{{item.title}}</h2>
+        <h3>
+            {{item.content}}
+        </h3>
+        <h3>
+            Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+        </h3>
+    </a>
+</section>
+{% endfor %}
+{% endblock %}

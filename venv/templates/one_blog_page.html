@@ -5,8 +5,10 @@
 {% endblock %}
 {% block content %}
 <a href="../../autors/{{ news.user_id }}"><h1>{{ news.user.name }}</h1></a>
+<h1>{{ news.title }}</h1>
 <h3>Дата написания - {{ news.created_date }}</h3>
 <p>{{ news.content }}</p>
+<h1>Комментарии:</h1>
 {% if current_user.is_authenticated %}
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
@@ -14,13 +16,23 @@
         {{ form.content.label }}<br>
         {{ form.content(class="form-control") }}<br>
         {% for error in form.content.errors %}
-            <p content="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
+    <p content="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
     </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
 </form>
 {% endif %}
+<!--нижнее подчеркивание далее сделано из-за того, что программа путала comment
+с чем-то другим и не распознавала его-->
+{% for c in comments %}
+<div class="news">
+    <h2>{{ c[0] }}</h2>
+    <div>
+        {{ c[1] }}
+    </div>
+</div>
+{% endfor %}
 {% endblock %}

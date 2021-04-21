@@ -3,7 +3,7 @@ background: #b5ce12;
 text-align: center;
 }
 
-.one-breed-block a {
+.one-block a {
   margin: 20px;
   color: #111;
   text-decoration: none;
@@ -11,12 +11,12 @@ text-align: center;
   text-align: center;
 }
 
-.one-breed-block h2 {
+.one-block h2 {
   color: #111111;
   text-decoration: none;
   text-align: center;
 }
 
-.one-breed-block {
+.one-block {
   margin: 20px;
   border: 2px solid #000000;}

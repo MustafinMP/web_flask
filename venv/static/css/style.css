@@ -58,3 +58,13 @@
   padding: 0 20px;
 }
 
+.register a {
+  font-size: 25px;
+  color: #ffffff;
+  text-decoration: none;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  text-align: right;  margin: 0 0 0 auto;
+  margin-left: 90%;
+  float: left;
+}
