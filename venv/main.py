@@ -7,15 +7,12 @@ from data.subscriptions import Subscriptions
 from forms.user import RegisterForm
 from forms.news import NewsForm
 from forms.comments import CommentsForm
-from forms.subscribe import SubscribeForm
 from flask_login import LoginManager, login_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import EmailField
 from wtforms import *
 from wtforms.validators import DataRequired
-from werkzeug.utils import secure_filename
 import requests
-import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'cat_world_secret_key'
