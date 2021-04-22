@@ -19,4 +19,27 @@ text-align: center;
 
 .one-block {
   margin: 20px;
-  border: 2px solid #000000;}
+  border: 2px solid #000000;
+}
+
+.comment h2 {
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn {
+  text-align: center;
+  text-decoration: none;
+  background: #97b601;
+  color: #000000;
+  text-align: center;
+  border: 1px solid #000000;
+
+}
+
+h1 {
+text-align: center
+}
+
+.form p {
+text-align: center}

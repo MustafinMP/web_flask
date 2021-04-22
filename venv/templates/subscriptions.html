@@ -8,9 +8,9 @@
 {% block content %}
 {% for autor in autors %}
 <a class="col-md6 border rounded" href="/blogs/{{ item.id }}">
-    <h2>{{autor}}</h2>
+    <h2>{{autor.name}}</h2>
     <div>
-        {{}}
+        {{autor.about}}
     </div>
 </a>
 {% endfor %}

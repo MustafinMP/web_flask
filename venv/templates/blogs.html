@@ -7,7 +7,7 @@
 {% block content %}
 <h1 class="breed-header">Записи в блоге</h1>
 {% if current_user.is_authenticated %}
-<a href="blogs/new" class="btn btn-secondary">Добавить блог</a>
+<a href="blogs/new" class="btn">Добавить блог</a>
 {% endif %}
 {% for item in news %}
 <section class="one-block">

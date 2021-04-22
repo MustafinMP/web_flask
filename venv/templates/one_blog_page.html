@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block links %}
-
+<link rel="stylesheet" type="text/css" href="../static/css/blocks.css"/>
 {% endblock %}
 {% block content %}
 <a href="../../autors/{{ news.user_id }}"><h1>{{ news.user.name }}</h1></a>
@@ -28,11 +28,11 @@
 <!--нижнее подчеркивание далее сделано из-за того, что программа путала comment
 с чем-то другим и не распознавала его-->
 {% for c in comments %}
-<div class="news">
+<div class="comments">
     <h2>{{ c[0] }}</h2>
-    <div>
+    <p>
         {{ c[1] }}
-    </div>
+    </p>
 </div>
 {% endfor %}
 {% endblock %}
